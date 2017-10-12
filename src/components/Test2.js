@@ -5,21 +5,35 @@ class Test2 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			fetching: false,
 			fetched: null,
 			err: false
 		};
 	}
 
 	componentDidMount() {
+		this.setState({fetching: true})
 		fetch("https://maps.googleapis.com/maps/api/geocode/json?address=Oxford%20University,%20uk&sensor=false", { method: "GET" })
 			.then((resp => {
 				if (resp.status === 200) {
-					this.setState((state) => ({ fetched: true }))
+					this.setState(({ fetched: true, fetching: false}))
 				}
 			}).bind(this))
 			.catch((err => {
 				this.setState((state) => ({ err: true }))
 			}).bind(this))
+	}
+
+	getMessage(){
+		if( this.state.fetching ){
+			return 'Fetching...'
+		}else if( this.state.fetched ){
+			return 'Fetching Completed'
+		}else if ( this.state.err ){
+			'Error fetching!!!'
+		}else{
+			'About to fetch'
+		}
 	}
 
 	render() {
@@ -29,7 +43,7 @@ class Test2 extends Component {
 		};
 		return (
 			<div style={style}>
-				This is another Test
+				{this.getMessage()}
 			</div>
 		)
 	}

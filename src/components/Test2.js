@@ -25,7 +25,7 @@ class Test2 extends Component {
 	}
 
 	getMessage(){
-		if( this.state.fetching ){
+		if( this.state.fetching && !this.state.err ){
 			return 'Fetching...'
 		}else if( this.state.fetched ){
 			return 'Fetching Completed'
